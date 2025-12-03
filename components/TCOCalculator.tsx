@@ -6,10 +6,10 @@ export default function App() {
     monthlyVisitors: 50000,
     currentConversionRate: 2.5,
     avgRevenuePerConversion: 5000,
-    implementationCost: 150000,
-    annualMaintenanceCost: 50000,
-    conversionRateIncrease: 35,
-    engagementIncrease: 25
+    implementationCost: 300000,
+    annualMaintenanceCost: 100000,
+    conversionRateIncrease: 5,
+    engagementIncrease: 5
   });
 
   const handleInputChange = (field, value) => {
@@ -174,7 +174,7 @@ export default function App() {
                   />
 
                   <SliderInput
-                    label="Annual Maintenance Cost"
+                    label="Contentful Enterprise License Cost"
                     value={inputs.annualMaintenanceCost}
                     onChange={(val) => handleInputChange('annualMaintenanceCost', val)}
                     min={10000}
