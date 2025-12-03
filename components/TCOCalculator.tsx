@@ -8,8 +8,8 @@ export default function App() {
     avgRevenuePerConversion: 5000,
     implementationCost: 150000,
     annualMaintenanceCost: 50000,
-    conversionRateIncrease: 35,
-    engagementIncrease: 25,
+    conversionRateIncrease: 5,
+    engagementIncrease: 5,
     timeToValue: 6
   });
 
