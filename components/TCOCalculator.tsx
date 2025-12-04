@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DollarSign, TrendingUp, Zap, Calculator } from 'lucide-react';
+import { DollarSign, TrendingUp, Zap, Calculator, Download, Upload } from 'lucide-react';
 
 export default function App() {
   const [valueDriver, setValueDriver] = useState('revenue');
@@ -100,6 +100,13 @@ export default function App() {
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Contentful Value ROI Calculator</h1>
           <p className="text-gray-600">Quantify revenue growth and operational efficiency gains</p>
+          <button
+            onClick={exportToCSV}
+            className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+          >
+            <Download className="w-5 h-5" />
+            Export Inputs to CSV
+          </button>
         </div>
 
         <div className="grid grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto">
