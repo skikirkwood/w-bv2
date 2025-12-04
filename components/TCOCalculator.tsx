@@ -6,7 +6,7 @@ export default function App() {
   const [inputs, setInputs] = useState({
     monthlyVisitors: 50000,
     currentConversionRate: 0.1,
-    avgRevenuePerConversion: 5000,
+    avgRevenuePerConversion: 100000,
     campaignLaunchTime: 30,
     developerHourlyRate: 150,
     monthlyDevHoursOnContent: 160,
@@ -138,7 +138,7 @@ export default function App() {
                   <div className="space-y-5">
                     <SliderInput label="Monthly Website Visitors" value={inputs.monthlyVisitors} onChange={(val) => handleInputChange('monthlyVisitors', val)} min={10000} max={500000} step={10000} />
                     <SliderInput label="Current Conversion Rate" value={inputs.currentConversionRate} onChange={(val) => handleInputChange('currentConversionRate', val)} min={0.01} max={1} step={0.01} suffix="%" decimals={2} />
-                    <SliderInput label="Average Revenue per Conversion" value={inputs.avgRevenuePerConversion} onChange={(val) => handleInputChange('avgRevenuePerConversion', val)} min={500} max={20000} step={500} prefix="$" />
+                    <SliderInput label="Average Revenue per Conversion" value={inputs.avgRevenuePerConversion} onChange={(val) => handleInputChange('avgRevenuePerConversion', val)} min={10000} max={200000} step={5000} prefix="$" />
                     <SliderInput label="Current Campaign Launch Time (Days)" value={inputs.campaignLaunchTime} onChange={(val) => handleInputChange('campaignLaunchTime', val)} min={7} max={90} step={1} helper="Typical time from concept to live" />
                   </div>
 
