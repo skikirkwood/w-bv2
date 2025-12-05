@@ -3,6 +3,7 @@ import { DollarSign, TrendingUp, Zap, Calculator, Download, Camera } from 'lucid
 
 export default function App() {
   const [valueDriver, setValueDriver] = useState('revenue');
+  const [showExportMenu, setShowExportMenu] = useState(false);
   const [inputs, setInputs] = useState({
     monthlyVisitors: 50000,
     currentConversionRate: 0.1,
@@ -22,132 +23,6 @@ export default function App() {
 
   const handleInputChange = (field, value) => {
     setInputs(prev => ({ ...prev, [field]: parseFloat(value) }));
-  };
-
-  const exportToCSV = () => {
-    const csvRows = [
-      ['Input Field', 'Your Value'],
-      ['Monthly Website Visitors', inputs.monthlyVisitors],
-      ['Current Conversion Rate (%)', inputs.currentConversionRate],
-      ['Average Revenue per Conversion ($)', inputs.avgRevenuePerConversion],
-      ['Current Campaign Launch Time (days)', inputs.campaignLaunchTime],
-      ['Developer Hourly Rate ($)', inputs.developerHourlyRate],
-      ['Monthly Dev Hours on Content', inputs.monthlyDevHoursOnContent],
-      ['Number of CMS Platforms', inputs.numberOfCMS],
-      ['Annual CMS Maintenance Cost ($)', inputs.cmsMaintenanceCostPerYear],
-      ['Marketing Team Size', inputs.marketingTeamSize],
-      ['Implementation Cost ($)', inputs.implementationCost],
-      ['Annual License Cost ($)', inputs.annualLicenseCost],
-      ['Expected Conversion Rate Increase (%)', inputs.conversionRateIncrease],
-      ['Expected Time-to-Market Reduction (%)', inputs.timeToMarketReduction],
-      ['Expected Developer Efficiency Gain (%)', inputs.devEfficiencyGain]
-    ];
-    
-    const csvContent = csvRows.map(row => row.join(',')).join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'contentful_roi_inputs.csv';
-    link.click();
-  };
-
-  const exportResultsAsPDF = () => {
-    const content = `
-CONTENTFUL ROI CALCULATOR - RESULTS SUMMARY
-Generated: ${new Date().toLocaleDateString()}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-TOTAL BUSINESS IMPACT (3-Year Projection)
-
-Annual Benefit:          ${formatCurrency(totalAnnualBenefit)}
-3-Year Benefit:          ${formatCurrency(threeYearBenefit)}
-3-Year ROI:              ${roi.toFixed(0)}%
-Payback Period:          ${paybackMonths.toFixed(1)} months
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-REVENUE GROWTH IMPACT
-
-Current Annual Revenue:  ${formatCurrency(revenue.currentRevenue)}
-New Annual Revenue:      ${formatCurrency(revenue.newRevenue)}
-Conversion Rate Lift:    ${formatCurrency(revenue.conversionLift)}
-Time-to-Market Value:    ${formatCurrency(revenue.timeToMarketValue)}
-Total Revenue Lift:      ${formatCurrency(revenue.totalLift)}
-
-Key Inputs:
-- Monthly Visitors:      ${formatNumber(inputs.monthlyVisitors)}
-- Current Conv Rate:     ${inputs.currentConversionRate.toFixed(2)}%
-- Avg Revenue/Conv:      ${formatCurrency(inputs.avgRevenuePerConversion)}
-- Campaign Launch Time:  ${inputs.campaignLaunchTime} days
-- Expected Conv Increase: ${inputs.conversionRateIncrease}%
-- Time-to-Market Reduction: ${inputs.timeToMarketReduction}%
-
-Proof Points:
-• Kraft Heinz: 78% increase in conversion rates
-• Ruggable: 25% higher conversions, 7x CTR
-• KFC: 43% growth in digital sales
-• On Running: 40% sales direct-to-consumer
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-OPERATIONAL EFFICIENCY SAVINGS
-
-Current Annual Dev Cost: ${formatCurrency(efficiency.currentDevCost)}
-Developer Cost Savings:  ${formatCurrency(efficiency.devCostSavings)}
-CMS Consolidation:       ${formatCurrency(efficiency.cmsConsolidationSavings)}
-Marketing Productivity:  ${formatCurrency(efficiency.marketingProductivityGain)}
-Total Annual Savings:    ${formatCurrency(efficiency.totalSavings)}
-
-Key Inputs:
-- Developer Hourly Rate: ${formatCurrency(inputs.developerHourlyRate)}
-- Monthly Dev Hours:     ${inputs.monthlyDevHoursOnContent} hours
-- Number of CMS:         ${inputs.numberOfCMS}
-- Annual CMS Cost:       ${formatCurrency(inputs.cmsMaintenanceCostPerYear)}
-- Marketing Team Size:   ${inputs.marketingTeamSize}
-- Expected Efficiency Gain: ${inputs.devEfficiencyGain}%
-
-Proof Points:
-• Audible: 80% decrease in content production time
-• Shiseido: 50% reduction in content costs
-• Costa Coffee: 15 sites built in 15 minutes each
-• BigCommerce: 77% more content, 45% fewer tickets
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-INVESTMENT SUMMARY
-
-Implementation Cost:     ${formatCurrency(inputs.implementationCost)}
-3-Year License Cost:     ${formatCurrency(inputs.annualLicenseCost * 3)}
-Total Investment:        ${formatCurrency(totalCost)}
-Net 3-Year Benefit:      ${formatCurrency(netBenefit)}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-ABOUT CONTENTFUL
-
-Contentful's composable content platform enables enterprises to:
-• Launch campaigns 60-80% faster
-• Increase conversion rates by 25-78%
-• Reduce operational costs through consolidation
-• Free developers to focus on innovation
-
-Key Differentiators:
-• Composable API-first platform
-• Native personalization & experimentation
-• 110+ marketplace integrations
-• Powers 30% of Fortune 500
-• 99.99% uptime SLA
-• ISO 27001 & SOC 2 Type II certified
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-`;
-
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'contentful_roi_results.txt';
-    link.click();
   };
 
   const calculateRevenueImpact = () => {
@@ -200,6 +75,80 @@ Key Differentiators:
     return new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(num);
   };
 
+  const exportToCSV = () => {
+    const csvRows = [
+      ['Input Field', 'Your Value'],
+      ['Monthly Website Visitors', inputs.monthlyVisitors],
+      ['Current Conversion Rate (%)', inputs.currentConversionRate],
+      ['Average Revenue per Conversion ($)', inputs.avgRevenuePerConversion],
+      ['Current Campaign Launch Time (days)', inputs.campaignLaunchTime],
+      ['Developer Hourly Rate ($)', inputs.developerHourlyRate],
+      ['Monthly Dev Hours on Content', inputs.monthlyDevHoursOnContent],
+      ['Number of CMS Platforms', inputs.numberOfCMS],
+      ['Annual CMS Maintenance Cost ($)', inputs.cmsMaintenanceCostPerYear],
+      ['Marketing Team Size', inputs.marketingTeamSize],
+      ['Implementation Cost ($)', inputs.implementationCost],
+      ['Annual License Cost ($)', inputs.annualLicenseCost],
+      ['Expected Conversion Rate Increase (%)', inputs.conversionRateIncrease],
+      ['Expected Time-to-Market Reduction (%)', inputs.timeToMarketReduction],
+      ['Expected Developer Efficiency Gain (%)', inputs.devEfficiencyGain]
+    ];
+    
+    const csvContent = csvRows.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'contentful_roi_inputs.csv';
+    link.click();
+  };
+
+  const exportTextSummary = () => {
+    const content = `CONTENTFUL ROI CALCULATOR - RESULTS SUMMARY
+Generated: ${new Date().toLocaleDateString()}
+
+TOTAL BUSINESS IMPACT (3-Year Projection)
+Annual Benefit: ${formatCurrency(totalAnnualBenefit)}
+3-Year Benefit: ${formatCurrency(threeYearBenefit)}
+3-Year ROI: ${roi.toFixed(0)}%
+Payback Period: ${paybackMonths.toFixed(1)} months
+
+REVENUE GROWTH IMPACT
+Current Annual Revenue: ${formatCurrency(revenue.currentRevenue)}
+New Annual Revenue: ${formatCurrency(revenue.newRevenue)}
+Conversion Rate Lift: ${formatCurrency(revenue.conversionLift)}
+Time-to-Market Value: ${formatCurrency(revenue.timeToMarketValue)}
+Total Revenue Lift: ${formatCurrency(revenue.totalLift)}
+
+OPERATIONAL EFFICIENCY SAVINGS
+Current Annual Dev Cost: ${formatCurrency(efficiency.currentDevCost)}
+Developer Cost Savings: ${formatCurrency(efficiency.devCostSavings)}
+CMS Consolidation: ${formatCurrency(efficiency.cmsConsolidationSavings)}
+Marketing Productivity: ${formatCurrency(efficiency.marketingProductivityGain)}
+Total Annual Savings: ${formatCurrency(efficiency.totalSavings)}
+
+INVESTMENT SUMMARY
+Implementation Cost: ${formatCurrency(inputs.implementationCost)}
+3-Year License Cost: ${formatCurrency(inputs.annualLicenseCost * 3)}
+Total Investment: ${formatCurrency(totalCost)}
+Net 3-Year Benefit: ${formatCurrency(netBenefit)}`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'contentful_roi_results.txt';
+    link.click();
+  };
+
+  const exportHTMLPresentation = () => {
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Contentful ROI</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background:#1a1a1a;overflow:hidden}.slide-container{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}.slide{width:1200px;height:675px;background:#fff;padding:60px 80px;box-shadow:0 10px 50px rgba(0,0,0,.3);display:none;flex-direction:column;position:relative}.slide.active{display:flex}.slide-header{font-size:48px;font-weight:700;color:#1e40af;margin-bottom:40px}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}.stat-box{background:linear-gradient(135deg,#3b82f6,#1e40af);padding:30px;border-radius:12px;color:#fff}.stat-box.green{background:linear-gradient(135deg,#10b981,#059669)}.stat-label{font-size:16px;opacity:.9;margin-bottom:10px}.stat-value{font-size:42px;font-weight:700}.nav-controls{position:fixed;bottom:40px;right:40px;display:flex;gap:20px}.nav-btn{background:#3b82f6;color:#fff;border:none;padding:15px 30px;border-radius:8px;font-size:18px;cursor:pointer}.nav-btn:hover{background:#2563eb}.nav-btn:disabled{background:#cbd5e1;cursor:not-allowed}.title-slide{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;justify-content:center;align-items:center;text-align:center}.title-slide .slide-header{color:#fff;font-size:64px}</style></head><body><div class="slide-container"><div class="slide active title-slide"><div class="slide-header">Contentful ROI Analysis</div><p style="font-size:24px;margin-top:20px">Business Value Assessment</p></div><div class="slide"><div class="slide-header">Executive Summary</div><div class="stat-grid"><div class="stat-box green"><div class="stat-label">3-Year ROI</div><div class="stat-value">${roi.toFixed(0)}%</div></div><div class="stat-box green"><div class="stat-label">Payback Period</div><div class="stat-value">${paybackMonths.toFixed(1)} mo</div></div><div class="stat-box"><div class="stat-label">Annual Benefit</div><div class="stat-value">${formatCurrency(totalAnnualBenefit)}</div></div><div class="stat-box"><div class="stat-label">3-Year Benefit</div><div class="stat-value">${formatCurrency(threeYearBenefit)}</div></div></div></div></div><div class="nav-controls"><button class="nav-btn" onclick="changeSlide(-1)">← Previous</button><button class="nav-btn" onclick="changeSlide(1)">Next →</button></div><script>let currentSlide=0;const slides=document.querySelectorAll('.slide');function showSlide(n){slides[currentSlide].classList.remove('active');currentSlide=(n+slides.length)%slides.length;slides[currentSlide].classList.add('active')}function changeSlide(d){showSlide(currentSlide+d)}document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')changeSlide(-1);if(e.key==='ArrowRight')changeSlide(1)});showSlide(0)</script></body></html>`;
+
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'contentful_roi_presentation.html';
+    link.click();
+  };
+
   const SliderInput = ({ label, value, onChange, min, max, step, prefix = '', suffix = '', helper, decimals }) => (
     <div className="space-y-2">
       <div className="flex justify-between items-center">
@@ -214,13 +163,13 @@ Key Differentiators:
   );
 
   const valueDrivers = [
-    { id: 'revenue', name: 'Revenue Growth', icon: TrendingUp, color: 'green' },
-    { id: 'efficiency', name: 'Operational Efficiency', icon: Zap, color: 'blue' }
+    { id: 'revenue', name: 'Revenue Growth', icon: TrendingUp },
+    { id: 'efficiency', name: 'Operational Efficiency', icon: Zap }
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 md:p-8">
-      <style>{`.slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #3b82f6; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: all 0.2s; } .slider::-webkit-slider-thumb:hover { transform: scale(1.2); background: #2563eb; } .slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #3b82f6; cursor: pointer; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: all 0.2s; } .slider::-moz-range-thumb:hover { transform: scale(1.2); background: #2563eb; }`}</style>
+      <style>{`.slider::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:#3b82f6;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.2);transition:all 0.2s}.slider::-webkit-slider-thumb:hover{transform:scale(1.2);background:#2563eb}.slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#3b82f6;cursor:pointer;border:none;box-shadow:0 2px 4px rgba(0,0,0,0.2);transition:all 0.2s}.slider::-moz-range-thumb:hover{transform:scale(1.2);background:#2563eb}`}</style>
 
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
@@ -244,7 +193,8 @@ Key Differentiators:
         <div className="grid lg:grid-cols-2 gap-6 md:gap-8 mb-8">
           <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 max-h-[800px] overflow-y-auto">
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <Calculator className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />Configure Your Scenario</h2>
+              <Calculator className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />Configure Your Scenario
+            </h2>
 
             <div className="space-y-6">
               {valueDriver === 'revenue' && (
@@ -255,7 +205,7 @@ Key Differentiators:
                       <div>
                         <h3 className="font-bold text-green-900 mb-2 text-lg">Revenue Growth</h3>
                         <p className="text-sm text-green-800 leading-relaxed">
-                          Launch campaigns faster and boost conversions with personalized, omnichannel content delivery. Contentful empowers marketing teams to capture market opportunities and drive measurable revenue growth.
+                          Launch campaigns faster and boost conversions with personalized, omnichannel content delivery.
                         </p>
                       </div>
                     </div>
@@ -271,8 +221,8 @@ Key Differentiators:
                   <div className="border-t pt-6 mt-6">
                     <h3 className="font-semibold text-gray-900 mb-4">Expected Improvements</h3>
                     <div className="space-y-5">
-                      <SliderInput label="Conversion Rate Increase" value={inputs.conversionRateIncrease} onChange={(val) => handleInputChange('conversionRateIncrease', val)} min={10} max={100} step={5} suffix="%" helper="Industry range: 25-78% (Kraft Heinz achieved 78%)" />
-                      <SliderInput label="Time-to-Market Reduction" value={inputs.timeToMarketReduction} onChange={(val) => handleInputChange('timeToMarketReduction', val)} min={30} max={90} step={5} suffix="%" helper="Launch campaigns in days instead of weeks" />
+                      <SliderInput label="Conversion Rate Increase" value={inputs.conversionRateIncrease} onChange={(val) => handleInputChange('conversionRateIncrease', val)} min={10} max={100} step={5} suffix="%" helper="Industry range: 25-78%" />
+                      <SliderInput label="Time-to-Market Reduction" value={inputs.timeToMarketReduction} onChange={(val) => handleInputChange('timeToMarketReduction', val)} min={30} max={90} step={5} suffix="%" helper="Launch in days vs weeks" />
                     </div>
                   </div>
                 </>
@@ -286,7 +236,7 @@ Key Differentiators:
                       <div>
                         <h3 className="font-bold text-blue-900 mb-2 text-lg">Operational Efficiency</h3>
                         <p className="text-sm text-blue-800 leading-relaxed">
-                          Reduce developer burden, consolidate multiple CMS platforms, and empower marketers with self-service tools. Free your technical teams to focus on innovation while marketing moves faster.
+                          Reduce developer burden and empower marketers with self-service tools.
                         </p>
                       </div>
                     </div>
@@ -294,17 +244,15 @@ Key Differentiators:
 
                   <div className="space-y-5">
                     <SliderInput label="Developer Hourly Rate" value={inputs.developerHourlyRate} onChange={(val) => handleInputChange('developerHourlyRate', val)} min={75} max={250} step={5} prefix="$" />
-                    <SliderInput label="Monthly Dev Hours on Content Tasks" value={inputs.monthlyDevHoursOnContent} onChange={(val) => handleInputChange('monthlyDevHoursOnContent', val)} min={40} max={400} step={10} helper="Hours spent on routine content updates & changes" />
-                    <SliderInput label="Number of CMS Platforms" value={inputs.numberOfCMS} onChange={(val) => handleInputChange('numberOfCMS', val)} min={1} max={10} step={1} helper="Separate systems across brands, regions, or channels" />
-                    <SliderInput label="Annual CMS Maintenance Cost" value={inputs.cmsMaintenanceCostPerYear} onChange={(val) => handleInputChange('cmsMaintenanceCostPerYear', val)} min={50000} max={500000} step={10000} prefix="$" helper="Licensing, hosting, support across all platforms" />
+                    <SliderInput label="Monthly Dev Hours on Content Tasks" value={inputs.monthlyDevHoursOnContent} onChange={(val) => handleInputChange('monthlyDevHoursOnContent', val)} min={40} max={400} step={10} helper="Hours on routine updates" />
+                    <SliderInput label="Number of CMS Platforms" value={inputs.numberOfCMS} onChange={(val) => handleInputChange('numberOfCMS', val)} min={1} max={10} step={1} />
+                    <SliderInput label="Annual CMS Maintenance Cost" value={inputs.cmsMaintenanceCostPerYear} onChange={(val) => handleInputChange('cmsMaintenanceCostPerYear', val)} min={50000} max={500000} step={10000} prefix="$" />
                     <SliderInput label="Marketing Team Size" value={inputs.marketingTeamSize} onChange={(val) => handleInputChange('marketingTeamSize', val)} min={3} max={50} step={1} />
                   </div>
 
                   <div className="border-t pt-6 mt-6">
                     <h3 className="font-semibold text-gray-900 mb-4">Expected Improvements</h3>
-                    <div className="space-y-5">
-                      <SliderInput label="Developer Efficiency Gain" value={inputs.devEfficiencyGain} onChange={(val) => handleInputChange('devEfficiencyGain', val)} min={30} max={80} step={5} suffix="%" helper="Typical range: 50-80% reduction in dev time on content" />
-                    </div>
+                    <SliderInput label="Developer Efficiency Gain" value={inputs.devEfficiencyGain} onChange={(val) => handleInputChange('devEfficiencyGain', val)} min={30} max={80} step={5} suffix="%" helper="Typical: 50-80%" />
                   </div>
                 </>
               )}
@@ -312,7 +260,7 @@ Key Differentiators:
               <div className="border-t pt-6 mt-6">
                 <h3 className="font-semibold text-gray-900 mb-4">Investment Required</h3>
                 <div className="space-y-4">
-                  <SliderInput label="Implementation Cost" value={inputs.implementationCost} onChange={(val) => handleInputChange('implementationCost', val)} min={50000} max={500000} step={10000} prefix="$" helper="One-time setup, integration, and migration" />
+                  <SliderInput label="Implementation Cost" value={inputs.implementationCost} onChange={(val) => handleInputChange('implementationCost', val)} min={50000} max={500000} step={10000} prefix="$" />
                   <SliderInput label="Annual License Cost" value={inputs.annualLicenseCost} onChange={(val) => handleInputChange('annualLicenseCost', val)} min={25000} max={200000} step={5000} prefix="$" />
                 </div>
               </div>
@@ -353,7 +301,7 @@ Key Differentiators:
                     </div>
                     <span className="text-xl font-bold text-green-600">{formatCurrency(revenue.totalLift)}</span>
                   </div>
-                  <div className="text-sm text-gray-600 ml-7">Annual revenue increase from improved conversions and faster launches</div>
+                  <div className="text-sm text-gray-600 ml-7">Annual revenue increase</div>
                 </div>
 
                 <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
@@ -364,7 +312,7 @@ Key Differentiators:
                     </div>
                     <span className="text-xl font-bold text-blue-600">{formatCurrency(efficiency.totalSavings)}</span>
                   </div>
-                  <div className="text-sm text-gray-600 ml-7">Annual savings from reduced developer time and consolidated systems</div>
+                  <div className="text-sm text-gray-600 ml-7">Annual savings</div>
                 </div>
               </div>
             </div>
@@ -381,10 +329,6 @@ Key Differentiators:
                       <span className="font-semibold text-gray-900">{formatCurrency(revenue.currentRevenue)}</span>
                     </div>
                     <div className="flex justify-between py-2 border-b">
-                      <span className="text-gray-700">New Annual Revenue</span>
-                      <span className="font-semibold text-green-600">{formatCurrency(revenue.newRevenue)}</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b">
                       <span className="text-gray-700">Conversion Rate Lift</span>
                       <span className="font-semibold text-gray-900">{formatCurrency(revenue.conversionLift)}</span>
                     </div>
@@ -393,7 +337,7 @@ Key Differentiators:
                       <span className="font-semibold text-gray-900">{formatCurrency(revenue.timeToMarketValue)}</span>
                     </div>
                     <div className="flex justify-between py-3 pt-4">
-                      <span className="font-bold text-gray-900">Total Annual Revenue Lift</span>
+                      <span className="font-bold text-gray-900">Total Annual Lift</span>
                       <span className="text-xl font-bold text-green-600">{formatCurrency(revenue.totalLift)}</span>
                     </div>
                   </>
@@ -402,19 +346,15 @@ Key Differentiators:
                 {valueDriver === 'efficiency' && (
                   <>
                     <div className="flex justify-between py-2 border-b">
-                      <span className="text-gray-700">Current Annual Dev Cost</span>
-                      <span className="font-semibold text-gray-900">{formatCurrency(efficiency.currentDevCost)}</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b">
-                      <span className="text-gray-700">Developer Cost Savings</span>
+                      <span className="text-gray-700">Dev Cost Savings</span>
                       <span className="font-semibold text-blue-600">{formatCurrency(efficiency.devCostSavings)}</span>
                     </div>
                     <div className="flex justify-between py-2 border-b">
-                      <span className="text-gray-700">CMS Consolidation Savings</span>
+                      <span className="text-gray-700">CMS Consolidation</span>
                       <span className="font-semibold text-blue-600">{formatCurrency(efficiency.cmsConsolidationSavings)}</span>
                     </div>
                     <div className="flex justify-between py-2 border-b">
-                      <span className="text-gray-700">Marketing Productivity Value</span>
+                      <span className="text-gray-700">Marketing Productivity</span>
                       <span className="font-semibold text-blue-600">{formatCurrency(efficiency.marketingProductivityGain)}</span>
                     </div>
                     <div className="flex justify-between py-3 pt-4">
@@ -435,19 +375,15 @@ Key Differentiators:
                 <div className="space-y-3 text-sm">
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
                     <div className="font-semibold mb-1">Kraft Heinz</div>
-                    <div className="opacity-90">78% increase in conversion rates for flagship brands</div>
+                    <div className="opacity-90">78% increase in conversion rates</div>
                   </div>
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
                     <div className="font-semibold mb-1">Ruggable</div>
-                    <div className="opacity-90">25% higher conversions with personalized content, 7x click-through rate</div>
+                    <div className="opacity-90">25% higher conversions, 7x CTR</div>
                   </div>
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
                     <div className="font-semibold mb-1">KFC</div>
-                    <div className="opacity-90">43% growth in digital sales across 150+ country sites</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur rounded-lg p-3">
-                    <div className="font-semibold mb-1">On Running</div>
-                    <div className="opacity-90">40% of sales direct-to-consumer, expanded to 7 languages</div>
+                    <div className="opacity-90">43% growth in digital sales</div>
                   </div>
                 </div>
               )}
@@ -455,77 +391,19 @@ Key Differentiators:
                 <div className="space-y-3 text-sm">
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
                     <div className="font-semibold mb-1">Audible</div>
-                    <div className="opacity-90">80% decrease in content production time</div>
+                    <div className="opacity-90">80% decrease in production time</div>
                   </div>
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
-                    <div className="font-semibold mb-1">Shiseido Professional</div>
-                    <div className="opacity-90">50% reduction in content management costs through consolidation</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur rounded-lg p-3">
-                    <div className="font-semibold mb-1">Costa Coffee</div>
-                    <div className="opacity-90">Launched 15 localized websites, each built in just 15 minutes</div>
+                    <div className="font-semibold mb-1">Shiseido</div>
+                    <div className="opacity-90">50% reduction in costs</div>
                   </div>
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
                     <div className="font-semibold mb-1">BigCommerce</div>
-                    <div className="opacity-90">77% more content published, 45% fewer dev backlog tickets</div>
+                    <div className="opacity-90">77% more content, 45% fewer tickets</div>
                   </div>
                 </div>
               )}
             </div>
-
-            <div className="bg-slate-50 rounded-xl p-6 border-2 border-slate-200">
-              <h3 className="font-bold text-slate-900 mb-3">Investment Summary</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between py-2 border-b border-slate-300">
-                  <span className="text-slate-600">Implementation Cost</span>
-                  <span className="font-semibold text-slate-900">{formatCurrency(inputs.implementationCost)}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-300">
-                  <span className="text-slate-600">3-Year License Cost</span>
-                  <span className="font-semibold text-slate-900">{formatCurrency(inputs.annualLicenseCost * 3)}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-300">
-                  <span className="text-slate-600">Total 3-Year Investment</span>
-                  <span className="font-semibold text-slate-900">{formatCurrency(totalCost)}</span>
-                </div>
-                <div className="flex justify-between py-3 pt-4">
-                  <span className="font-bold text-slate-900">Net 3-Year Benefit</span>
-                  <span className="text-xl font-bold text-green-600">{formatCurrency(netBenefit)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-bold text-gray-900 mb-3">About This Calculator</h3>
-          <p className="text-gray-600 text-sm leading-relaxed mb-3">
-            This ROI calculator is based on Contentful's proven Value Messaging Framework and real customer outcomes. Contentful's composable content platform enables enterprises to launch campaigns 60-80% faster, increase conversion rates by 25-78%, and reduce operational costs by consolidating legacy systems while freeing developers to focus on innovation.
-          </p>
-          <div className="grid md:grid-cols-2 gap-4 mt-4">
-            <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-              <h4 className="font-semibold text-green-900 mb-2">Revenue Growth Drivers</h4>
-              <ul className="text-sm text-green-800 space-y-1">
-                <li>• Faster time-to-market for campaigns</li>
-                <li>• Higher conversion rates with personalization</li>
-                <li>• Omnichannel content delivery</li>
-                <li>• Native A/B testing and experimentation</li>
-              </ul>
-            </div>
-            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-              <h4 className="font-semibold text-blue-900 mb-2">Efficiency Improvement Drivers</h4>
-              <ul className="text-sm text-blue-800 space-y-1">
-                <li>• Self-service marketing tools reduce dev burden</li>
-                <li>• Consolidate multiple CMS platforms</li>
-                <li>• Reusable content components</li>
-                <li>• 30% marketing productivity gain</li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-4 pt-4 border-t">
-            <p className="text-xs text-gray-500 leading-relaxed">
-              <strong>Key Differentiators:</strong> Composable API-first platform • Native personalization & experimentation • 110+ marketplace integrations • Powers 30% of Fortune 500 • 99.99% uptime SLA • ISO 27001 & SOC 2 Type II certified
-            </p>
           </div>
         </div>
 
@@ -538,15 +416,47 @@ Key Differentiators:
               <Download className="w-6 h-6" />
               Export Inputs to CSV
             </button>
-            <button
-              onClick={exportResultsAsPDF}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-lg text-lg font-semibold"
-            >
-              <Camera className="w-6 h-6" />
-              Download Results Summary
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setShowExportMenu(!showExportMenu)}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-lg text-lg font-semibold"
+              >
+                <Camera className="w-6 h-6" />
+                Download Results
+              </button>
+              {showExportMenu && (
+                <div className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-xl border border-gray-200 z-50 min-w-[280px]">
+                  <button
+                    onClick={() => {
+                      exportTextSummary();
+                      setShowExportMenu(false);
+                    }}
+                    className="w-full text-left px-6 py-4 hover:bg-gray-50 transition-colors flex items-center gap-3 border-b border-gray-100"
+                  >
+                    <Download className="w-5 h-5 text-gray-600" />
+                    <div>
+                      <div className="font-semibold text-gray-900">Text Summary</div>
+                      <div className="text-sm text-gray-500">Formatted text file (.txt)</div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => {
+                      exportHTMLPresentation();
+                      setShowExportMenu(false);
+                    }}
+                    className="w-full text-left px-6 py-4 hover:bg-gray-50 transition-colors flex items-center gap-3 rounded-b-lg"
+                  >
+                    <Camera className="w-5 h-5 text-gray-600" />
+                    <div>
+                      <div className="font-semibold text-gray-900">HTML Presentation</div>
+                      <div className="text-sm text-gray-500">Interactive slides (.html)</div>
+                    </div>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-          <p className="text-sm text-gray-600 mt-4">Download your scenario and results to share with your team or send to us for a detailed analysis</p>
+          <p className="text-sm text-gray-600 mt-4">Download your scenario and results to share with your team</p>
         </div>
       </div>
     </div>
