@@ -353,7 +353,7 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
     <div class="page-indicator">Page 1 of 5</div>
   </div>
 </body>
-</html>\`;
+</html>`;
 
     // Page 2: Value Breakdown
     const page2 = `<!DOCTYPE html>
@@ -399,16 +399,16 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
     <div class="page-indicator">Page 2 of 5</div>
   </div>
 </body>
-</html>\`;
+</html>`;
 
     // Page 3: Revenue Details
-    const page3 = \`<!DOCTYPE html>
+    const page3 = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contentful ROI - Revenue Details</title>
-  \${sharedStyles}
+  ${sharedStyles}
 </head>
 <body>
   <div class="slide-container">
@@ -462,7 +462,7 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
     <div class="page-indicator">Page 3 of 5</div>
   </div>
 </body>
-</html>\`;
+</html>`;
 
     // Page 4: Efficiency Details
     const page4 = `<!DOCTYPE html>
@@ -525,7 +525,7 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
     <div class="page-indicator">Page 4 of 5</div>
   </div>
 </body>
-</html>\`;
+</html>`;
 
     // Page 5: Investment Summary
     const page5 = `<!DOCTYPE html>
@@ -586,7 +586,7 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
     <div class="page-indicator">Page 5 of 5</div>
   </div>
 </body>
-</html>\`;
+</html>`;
 
     // Create and download all pages as a zip-like collection
     // Since we can't create a zip in browser easily, we'll download them sequentially
