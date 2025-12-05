@@ -15,7 +15,7 @@ export default function App() {
     marketingTeamSize: 10,
     implementationCost: 150000,
     annualLicenseCost: 75000,
-    conversionRateIncrease: 35,
+    conversionRateIncrease: 10,
     timeToMarketReduction: 60,
     devEfficiencyGain: 50
   });
