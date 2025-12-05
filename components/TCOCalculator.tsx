@@ -113,7 +113,128 @@ Net Benefit: ${formatCurrency(netBenefit)}`;
 
   const exportHTMLPresentation = () => {
     const logoUrl = 'https://images.ctfassets.net/jtqsy5pye0zd/6wNuQ2xMvbw134rccObi0q/bf61badc6d6d9780609e541713f0bba6/Contentful_Logo_2.5_Dark.svg';
-    window.open('data:text/html;charset=utf-8,' + encodeURIComponent(`<!DOCTYPE html><html><head><title>Contentful ROI</title><style>body{font-family:sans-serif;margin:40px}.logo{height:30px;margin-bottom:20px}h1{color:#2463EB}</style></head><body><img src="${logoUrl}" class="logo"><h1>Contentful ROI Analysis</h1><h2>Executive Summary</h2><p><strong>3-Year ROI:</strong> ${roi.toFixed(0)}%</p><p><strong>Annual Benefit:</strong> ${formatCurrency(totalAnnualBenefit)}</p><p><strong>Payback Period:</strong> ${paybackMonths.toFixed(1)} months</p><h2>Revenue Growth: ${formatCurrency(revenue.totalLift)}</h2><h2>Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}</h2></body></html>`));
+    const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Contentful ROI Analysis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f8fafc;padding:40px}
+.container{max-width:1200px;margin:0 auto;background:#fff;padding:60px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
+.logo{height:32px;margin-bottom:40px}
+h1{font-size:48px;font-weight:800;color:#0f172a;margin-bottom:16px}
+h2{font-size:32px;font-weight:700;color:#2463EB;margin:40px 0 20px}
+.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin:30px 0}
+.metric-box{background:linear-gradient(135deg,#2463EB,#1e40af);color:#fff;padding:32px;border-radius:12px}
+.metric-box.green{background:linear-gradient(135deg,#10b981,#059669)}
+.metric-label{font-size:14px;opacity:0.9;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em}
+.metric-value{font-size:42px;font-weight:800}
+.detail-row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid #e2e8f0}
+.detail-label{color:#64748b;font-weight:600}
+.detail-value{color:#0f172a;font-weight:700;font-size:18px}
+.print-btn{background:#10b981;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;margin-top:40px}
+.print-btn:hover{background:#059669}
+@media print{.print-btn{display:none}}
+</style>
+</head>
+<body>
+<div class="container">
+<img src="${logoUrl}" class="logo" alt="Contentful">
+<h1>ROI Analysis</h1>
+<p style="color:#64748b;font-size:18px;margin-bottom:40px">Business Value Assessment</p>
+
+<h2>Executive Summary</h2>
+<div class="metric-grid">
+<div class="metric-box green">
+<div class="metric-label">3-Year ROI</div>
+<div class="metric-value">${roi.toFixed(0)}%</div>
+</div>
+<div class="metric-box green">
+<div class="metric-label">Payback Period</div>
+<div class="metric-value">${paybackMonths.toFixed(1)} mo</div>
+</div>
+<div class="metric-box">
+<div class="metric-label">Annual Benefit</div>
+<div class="metric-value">${formatCurrency(totalAnnualBenefit)}</div>
+</div>
+<div class="metric-box">
+<div class="metric-label">3-Year Benefit</div>
+<div class="metric-value">${formatCurrency(threeYearBenefit)}</div>
+</div>
+</div>
+
+<h2>Revenue Growth Impact</h2>
+<div style="background:#f8fafc;padding:24px;border-radius:12px;margin:20px 0">
+<div class="detail-row">
+<span class="detail-label">Current Annual Revenue</span>
+<span class="detail-value">${formatCurrency(revenue.currentRevenue)}</span>
+</div>
+<div class="detail-row">
+<span class="detail-label">Conversion Rate Lift</span>
+<span class="detail-value" style="color:#10b981">${formatCurrency(revenue.conversionLift)}</span>
+</div>
+<div class="detail-row">
+<span class="detail-label">Time-to-Market Value</span>
+<span class="detail-value" style="color:#10b981">${formatCurrency(revenue.timeToMarketValue)}</span>
+</div>
+<div class="detail-row" style="border:none">
+<span class="detail-label" style="font-size:20px;color:#0f172a">Total Revenue Lift</span>
+<span class="detail-value" style="color:#10b981;font-size:24px">${formatCurrency(revenue.totalLift)}</span>
+</div>
+</div>
+
+<h2>Operational Efficiency Savings</h2>
+<div style="background:#f8fafc;padding:24px;border-radius:12px;margin:20px 0">
+<div class="detail-row">
+<span class="detail-label">Developer Cost Savings</span>
+<span class="detail-value" style="color:#2463EB">${formatCurrency(efficiency.devCostSavings)}</span>
+</div>
+<div class="detail-row">
+<span class="detail-label">CMS Consolidation</span>
+<span class="detail-value" style="color:#2463EB">${formatCurrency(efficiency.cmsConsolidationSavings)}</span>
+</div>
+<div class="detail-row">
+<span class="detail-label">Marketing Productivity</span>
+<span class="detail-value" style="color:#2463EB">${formatCurrency(efficiency.marketingProductivityGain)}</span>
+</div>
+<div class="detail-row" style="border:none">
+<span class="detail-label" style="font-size:20px;color:#0f172a">Total Annual Savings</span>
+<span class="detail-value" style="color:#2463EB;font-size:24px">${formatCurrency(efficiency.totalSavings)}</span>
+</div>
+</div>
+
+<h2>Investment Summary</h2>
+<div style="background:#f8fafc;padding:24px;border-radius:12px;margin:20px 0">
+<div class="detail-row">
+<span class="detail-label">Implementation Cost</span>
+<span class="detail-value">${formatCurrency(inputs.implementationCost)}</span>
+</div>
+<div class="detail-row">
+<span class="detail-label">3-Year License Cost</span>
+<span class="detail-value">${formatCurrency(inputs.annualLicenseCost * 3)}</span>
+</div>
+<div class="detail-row">
+<span class="detail-label">Total Investment</span>
+<span class="detail-value">${formatCurrency(totalCost)}</span>
+</div>
+<div class="detail-row" style="border:none">
+<span class="detail-label" style="font-size:20px;color:#0f172a">Net 3-Year Benefit</span>
+<span class="detail-value" style="color:#10b981;font-size:24px">${formatCurrency(netBenefit)}</span>
+</div>
+</div>
+
+<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+</div>
+</body>
+</html>`;
+    
+    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'contentful_roi_presentation.html';
+    link.click();
   };
 
   const SliderInput = ({ label, value, onChange, min, max, step, prefix = '', suffix = '', helper, decimals }) => (
