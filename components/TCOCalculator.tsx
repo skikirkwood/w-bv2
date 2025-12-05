@@ -158,6 +158,11 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
           padding: 60px;
           position: relative;
         }
+        .contentful-logo {
+          width: 180px;
+          height: auto;
+          margin-bottom: 30px;
+        }
         .nav-buttons {
           display: flex;
           gap: 15px;
@@ -313,6 +318,7 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
 </head>
 <body>
   <div class="slide-container">
+    <img src="https://images.ctfassets.net/jtqsy5pye0zd/6wNuQ2xMvbw134rccObi0q/bf61badc6d6d9780609e541713f0bba6/Contentful_Logo_2.5_Dark.svg" alt="Contentful Logo" class="contentful-logo">
     <h1>Contentful ROI Analysis</h1>
     <p class="subtitle">Executive Summary</p>
     
@@ -360,6 +366,7 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
 </head>
 <body>
   <div class="slide-container">
+    <img src="https://images.ctfassets.net/jtqsy5pye0zd/6wNuQ2xMvbw134rccObi0q/bf61badc6d6d9780609e541713f0bba6/Contentful_Logo_2.5_Dark.svg" alt="Contentful Logo" class="contentful-logo">
     <h2>Value Breakdown</h2>
     
     <div class="detail-section">
@@ -394,17 +401,9 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
 </body>
 </html>`;
 
-    // Page 3: Revenue Details
-    const page3 = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contentful ROI - Revenue Details</title>
-  ${sharedStyles}
-</head>
 <body>
   <div class="slide-container">
+    <img src="https://images.ctfassets.net/jtqsy5pye0zd/6wNuQ2xMvbw134rccObi0q/bf61badc6d6d9780609e541713f0bba6/Contentful_Logo_2.5_Dark.svg" alt="Contentful Logo" class="contentful-logo">
     <h2>Revenue Growth Details</h2>
     
     <div class="detail-section">
@@ -467,6 +466,7 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
 </head>
 <body>
   <div class="slide-container">
+    <img src="https://images.ctfassets.net/jtqsy5pye0zd/6wNuQ2xMvbw134rccObi0q/bf61badc6d6d9780609e541713f0bba6/Contentful_Logo_2.5_Dark.svg" alt="Contentful Logo" class="contentful-logo">
     <h2>Operational Efficiency Details</h2>
     
     <div class="detail-section">
@@ -529,6 +529,7 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
 </head>
 <body>
   <div class="slide-container">
+    <img src="https://images.ctfassets.net/jtqsy5pye0zd/6wNuQ2xMvbw134rccObi0q/bf61badc6d6d9780609e541713f0bba6/Contentful_Logo_2.5_Dark.svg" alt="Contentful Logo" class="contentful-logo">
     <h2>Investment Summary</h2>
     
     <div class="detail-section">
@@ -614,6 +615,13 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 md:p-8">
       <style>{`.slider::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:#3b82f6;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.2)}.slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#3b82f6;cursor:pointer;border:none;box-shadow:0 2px 4px rgba(0,0,0,0.2)}`}</style>
       <div className="max-w-7xl mx-auto">
+        <div className="mb-6">
+          <img 
+            src="https://images.ctfassets.net/jtqsy5pye0zd/6wNuQ2xMvbw134rccObi0q/bf61badc6d6d9780609e541713f0bba6/Contentful_Logo_2.5_Dark.svg" 
+            alt="Contentful Logo" 
+            className="h-8 md:h-10"
+          />
+        </div>
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Contentful Value ROI Calculator</h1>
           <p className="text-gray-600">Quantify revenue growth and operational efficiency gains</p>
