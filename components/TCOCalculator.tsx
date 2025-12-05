@@ -127,13 +127,6 @@ export default function App() {
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Contentful Value ROI Calculator</h1>
           <p className="text-gray-600">Quantify revenue growth and operational efficiency gains</p>
-          <button
-            onClick={exportToCSV}
-            className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md"
-          >
-            <Download className="w-5 h-5" />
-            Export Inputs to CSV
-          </button>
         </div>
 
         <div className="grid grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto">
@@ -435,6 +428,17 @@ export default function App() {
               <strong>Key Differentiators:</strong> Composable API-first platform • Native personalization & experimentation • 110+ marketplace integrations • Powers 30% of Fortune 500 • 99.99% uptime SLA • ISO 27001 & SOC 2 Type II certified
             </p>
           </div>
+        </div>
+
+        <div className="text-center mt-8">
+          <button
+            onClick={exportToCSV}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg text-lg font-semibold"
+          >
+            <Download className="w-6 h-6" />
+            Export Your Inputs to CSV
+          </button>
+          <p className="text-sm text-gray-600 mt-3">Download your scenario to share with your team or send to us for a detailed analysis</p>
         </div>
       </div>
     </div>
