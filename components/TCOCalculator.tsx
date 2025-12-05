@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DollarSign, TrendingUp, Zap, Calculator, Download, Upload } from 'lucide-react';
+import { DollarSign, TrendingUp, Zap, Calculator, Download } from 'lucide-react';
 
 export default function App() {
   const [valueDriver, setValueDriver] = useState('revenue');
@@ -22,6 +22,33 @@ export default function App() {
 
   const handleInputChange = (field, value) => {
     setInputs(prev => ({ ...prev, [field]: parseFloat(value) }));
+  };
+
+  const exportToCSV = () => {
+    const csvRows = [
+      ['Input Field', 'Your Value'],
+      ['Monthly Website Visitors', inputs.monthlyVisitors],
+      ['Current Conversion Rate (%)', inputs.currentConversionRate],
+      ['Average Revenue per Conversion ($)', inputs.avgRevenuePerConversion],
+      ['Current Campaign Launch Time (days)', inputs.campaignLaunchTime],
+      ['Developer Hourly Rate ($)', inputs.developerHourlyRate],
+      ['Monthly Dev Hours on Content', inputs.monthlyDevHoursOnContent],
+      ['Number of CMS Platforms', inputs.numberOfCMS],
+      ['Annual CMS Maintenance Cost ($)', inputs.cmsMaintenanceCostPerYear],
+      ['Marketing Team Size', inputs.marketingTeamSize],
+      ['Implementation Cost ($)', inputs.implementationCost],
+      ['Annual License Cost ($)', inputs.annualLicenseCost],
+      ['Expected Conversion Rate Increase (%)', inputs.conversionRateIncrease],
+      ['Expected Time-to-Market Reduction (%)', inputs.timeToMarketReduction],
+      ['Expected Developer Efficiency Gain (%)', inputs.devEfficiencyGain]
+    ];
+    
+    const csvContent = csvRows.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'contentful_roi_inputs.csv';
+    link.click();
   };
 
   const calculateRevenueImpact = () => {
