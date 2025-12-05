@@ -11,7 +11,6 @@ export default function App() {
     campaignLaunchTime: 30,
     developerHourlyRate: 150,
     monthlyDevHoursOnContent: 160,
-    numberOfCMS: 3,
     cmsMaintenanceCostPerYear: 100000,
     marketingTeamSize: 10,
     implementationCost: 150000,
@@ -46,14 +45,12 @@ export default function App() {
     const currentDevCost = inputs.monthlyDevHoursOnContent * inputs.developerHourlyRate * 12;
     const savedDevHours = inputs.monthlyDevHoursOnContent * (inputs.devEfficiencyGain / 100);
     const devCostSavings = savedDevHours * inputs.developerHourlyRate * 12;
-    const cmsConsolidationSavings = inputs.cmsMaintenanceCostPerYear * ((inputs.numberOfCMS - 1) / inputs.numberOfCMS);
     const marketingProductivityGain = (inputs.marketingTeamSize * 80000) * 0.3;
     return {
       currentDevCost,
       devCostSavings,
-      cmsConsolidationSavings,
       marketingProductivityGain,
-      totalSavings: devCostSavings + cmsConsolidationSavings + marketingProductivityGain
+      totalSavings: devCostSavings + marketingProductivityGain
     };
   };
 
@@ -77,7 +74,6 @@ Average Revenue per Conversion,$${inputs.avgRevenuePerConversion}
 Campaign Launch Time,${inputs.campaignLaunchTime} days
 Developer Hourly Rate,$${inputs.developerHourlyRate}
 Monthly Dev Hours on Content,${inputs.monthlyDevHoursOnContent}
-Number of CMS Platforms,${inputs.numberOfCMS}
 Annual CMS Maintenance Cost,$${inputs.cmsMaintenanceCostPerYear}
 Marketing Team Size,${inputs.marketingTeamSize}
 Implementation Cost,$${inputs.implementationCost}
@@ -125,7 +121,6 @@ Total Revenue Impact: ${formatCurrency(revenue.totalLift)}
 EFFICIENCY DETAILS
 =================
 Developer Cost Savings: ${formatCurrency(efficiency.devCostSavings)}
-CMS Consolidation Savings: ${formatCurrency(efficiency.cmsConsolidationSavings)}
 Marketing Productivity Gain: ${formatCurrency(efficiency.marketingProductivityGain)}
 Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
     
@@ -488,10 +483,6 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
         <span class="detail-value" style="color: #3b82f6;">${formatCurrency(efficiency.devCostSavings)}</span>
       </div>
       <div class="detail-row">
-        <span class="detail-label">CMS Consolidation Savings</span>
-        <span class="detail-value" style="color: #3b82f6;">${formatCurrency(efficiency.cmsConsolidationSavings)}</span>
-      </div>
-      <div class="detail-row">
         <span class="detail-label">Marketing Productivity Gain</span>
         <span class="detail-value" style="color: #3b82f6;">${formatCurrency(efficiency.marketingProductivityGain)}</span>
       </div>
@@ -506,10 +497,6 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
       <div class="detail-row">
         <span class="detail-label">Developer Efficiency Gain</span>
         <span class="detail-value">${inputs.devEfficiencyGain}%</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Number of CMS Platforms</span>
-        <span class="detail-value">${inputs.numberOfCMS}</span>
       </div>
       <div class="detail-row">
         <span class="detail-label">Marketing Team Size</span>
@@ -647,14 +634,14 @@ Total Efficiency Savings: ${formatCurrency(efficiency.totalSavings)}`;
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Calculator className="w-6 h-6 text-blue-600" />Configure Scenario</h2>
             <div className="space-y-6">
               {valueDriver === 'revenue' && (<><div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-5 mb-4 border border-green-200"><div className="flex items-start gap-3"><TrendingUp className="w-6 h-6 text-green-600 flex-shrink-0" /><div><h3 className="font-bold text-green-900 text-lg">Revenue Growth</h3><p className="text-sm text-green-800">Launch campaigns faster and boost conversions</p></div></div></div><SliderInput label="Monthly Visitors" value={inputs.monthlyVisitors} onChange={(v) => handleInputChange('monthlyVisitors', v)} min={10000} max={500000} step={10000} /><SliderInput label="Current Conversion Rate" value={inputs.currentConversionRate} onChange={(v) => handleInputChange('currentConversionRate', v)} min={0.01} max={1} step={0.01} suffix="%" decimals={2} /><SliderInput label="Avg Revenue per Conversion" value={inputs.avgRevenuePerConversion} onChange={(v) => handleInputChange('avgRevenuePerConversion', v)} min={10000} max={200000} step={5000} prefix="$" /><SliderInput label="Campaign Launch Time (Days)" value={inputs.campaignLaunchTime} onChange={(v) => handleInputChange('campaignLaunchTime', v)} min={7} max={90} step={1} /><div className="border-t pt-4"><h3 className="font-semibold text-gray-900 mb-4">Expected Improvements</h3><SliderInput label="Conversion Rate Increase" value={inputs.conversionRateIncrease} onChange={(v) => handleInputChange('conversionRateIncrease', v)} min={10} max={100} step={5} suffix="%" helper="Industry: 25-78%" /><div className="mt-4"><SliderInput label="Time-to-Market Reduction" value={inputs.timeToMarketReduction} onChange={(v) => handleInputChange('timeToMarketReduction', v)} min={30} max={90} step={5} suffix="%" /></div></div></>)}
-              {valueDriver === 'efficiency' && (<><div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-5 mb-4 border border-blue-200"><div className="flex items-start gap-3"><Zap className="w-6 h-6 text-blue-600 flex-shrink-0" /><div><h3 className="font-bold text-blue-900 text-lg">Operational Efficiency</h3><p className="text-sm text-blue-800">Reduce developer burden</p></div></div></div><SliderInput label="Developer Hourly Rate" value={inputs.developerHourlyRate} onChange={(v) => handleInputChange('developerHourlyRate', v)} min={75} max={250} step={5} prefix="$" /><SliderInput label="Monthly Dev Hours on Content" value={inputs.monthlyDevHoursOnContent} onChange={(v) => handleInputChange('monthlyDevHoursOnContent', v)} min={40} max={400} step={10} /><SliderInput label="Number of CMS Platforms" value={inputs.numberOfCMS} onChange={(v) => handleInputChange('numberOfCMS', v)} min={1} max={10} step={1} /><SliderInput label="Annual CMS Maintenance Cost" value={inputs.cmsMaintenanceCostPerYear} onChange={(v) => handleInputChange('cmsMaintenanceCostPerYear', v)} min={50000} max={500000} step={10000} prefix="$" /><SliderInput label="Marketing Team Size" value={inputs.marketingTeamSize} onChange={(v) => handleInputChange('marketingTeamSize', v)} min={3} max={50} step={1} /><div className="border-t pt-4"><h3 className="font-semibold text-gray-900 mb-4">Expected Improvements</h3><SliderInput label="Developer Efficiency Gain" value={inputs.devEfficiencyGain} onChange={(v) => handleInputChange('devEfficiencyGain', v)} min={30} max={80} step={5} suffix="%" helper="Typical: 50-80%" /></div></>)}
+              {valueDriver === 'efficiency' && (<><div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-5 mb-4 border border-blue-200"><div className="flex items-start gap-3"><Zap className="w-6 h-6 text-blue-600 flex-shrink-0" /><div><h3 className="font-bold text-blue-900 text-lg">Operational Efficiency</h3><p className="text-sm text-blue-800">Reduce developer burden</p></div></div></div><SliderInput label="Developer Hourly Rate" value={inputs.developerHourlyRate} onChange={(v) => handleInputChange('developerHourlyRate', v)} min={75} max={250} step={5} prefix="$" /><SliderInput label="Monthly Dev Hours on Content" value={inputs.monthlyDevHoursOnContent} onChange={(v) => handleInputChange('monthlyDevHoursOnContent', v)} min={40} max={400} step={10} /><SliderInput label="Annual CMS Maintenance Cost" value={inputs.cmsMaintenanceCostPerYear} onChange={(v) => handleInputChange('cmsMaintenanceCostPerYear', v)} min={50000} max={500000} step={10000} prefix="$" /><SliderInput label="Marketing Team Size" value={inputs.marketingTeamSize} onChange={(v) => handleInputChange('marketingTeamSize', v)} min={3} max={50} step={1} /><div className="border-t pt-4"><h3 className="font-semibold text-gray-900 mb-4">Expected Improvements</h3><SliderInput label="Developer Efficiency Gain" value={inputs.devEfficiencyGain} onChange={(v) => handleInputChange('devEfficiencyGain', v)} min={30} max={80} step={5} suffix="%" helper="Typical: 50-80%" /></div></>)}
               <div className="border-t pt-6 mt-6"><h3 className="font-semibold text-gray-900 mb-4">Investment</h3><div className="space-y-4"><SliderInput label="Implementation Cost" value={inputs.implementationCost} onChange={(v) => handleInputChange('implementationCost', v)} min={50000} max={500000} step={10000} prefix="$" /><SliderInput label="Annual License Cost" value={inputs.annualLicenseCost} onChange={(v) => handleInputChange('annualLicenseCost', v)} min={25000} max={200000} step={5000} prefix="$" /></div></div>
             </div>
           </div>
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg p-6 text-white"><h2 className="text-2xl font-bold mb-6">Total Business Impact</h2><div className="grid grid-cols-2 gap-4"><div className="bg-white/10 backdrop-blur rounded-lg p-4"><div className="text-sm opacity-90 mb-1">Annual Benefit</div><div className="text-2xl font-bold">{formatCurrency(totalAnnualBenefit)}</div></div><div className="bg-white/10 backdrop-blur rounded-lg p-4"><div className="text-sm opacity-90 mb-1">3-Year Benefit</div><div className="text-2xl font-bold">{formatCurrency(threeYearBenefit)}</div></div><div className="bg-white/10 backdrop-blur rounded-lg p-4"><div className="text-sm opacity-90 mb-1">3-Year ROI</div><div className="text-2xl font-bold">{roi.toFixed(0)}%</div></div><div className="bg-white/10 backdrop-blur rounded-lg p-4"><div className="text-sm opacity-90 mb-1">Payback Period</div><div className="text-2xl font-bold">{paybackMonths.toFixed(1)} mo</div></div></div></div>
             <div className="bg-white rounded-xl shadow-lg p-6"><h3 className="text-xl font-bold text-gray-900 mb-4">Value Breakdown</h3><div className="space-y-4"><div className="p-4 bg-green-50 rounded-lg border border-green-200"><div className="flex justify-between items-center mb-2"><div className="flex items-center gap-2"><TrendingUp className="w-5 h-5 text-green-600" /><span className="font-semibold text-gray-900">Revenue Growth</span></div><span className="text-xl font-bold text-green-600">{formatCurrency(revenue.totalLift)}</span></div></div><div className="p-4 bg-blue-50 rounded-lg border border-blue-200"><div className="flex justify-between items-center mb-2"><div className="flex items-center gap-2"><Zap className="w-5 h-5 text-blue-600" /><span className="font-semibold text-gray-900">Operational Efficiency</span></div><span className="text-xl font-bold text-blue-600">{formatCurrency(efficiency.totalSavings)}</span></div></div></div></div>
-            <div className="bg-white rounded-xl shadow-lg p-6"><h3 className="text-xl font-bold text-gray-900 mb-4">{valueDriver === 'revenue' ? 'Revenue Details' : 'Efficiency Details'}</h3><div className="space-y-3">{valueDriver === 'revenue' && (<><div className="flex justify-between py-2 border-b"><span className="text-gray-700">Current Revenue</span><span className="font-semibold">{formatCurrency(revenue.currentRevenue)}</span></div><div className="flex justify-between py-2 border-b"><span className="text-gray-700">Conversion Lift</span><span className="font-semibold">{formatCurrency(revenue.conversionLift)}</span></div><div className="flex justify-between py-3 pt-4"><span className="font-bold">Total Lift</span><span className="text-xl font-bold text-green-600">{formatCurrency(revenue.totalLift)}</span></div></>)}{valueDriver === 'efficiency' && (<><div className="flex justify-between py-2 border-b"><span className="text-gray-700">Dev Savings</span><span className="font-semibold">{formatCurrency(efficiency.devCostSavings)}</span></div><div className="flex justify-between py-2 border-b"><span className="text-gray-700">CMS Savings</span><span className="font-semibold">{formatCurrency(efficiency.cmsConsolidationSavings)}</span></div><div className="flex justify-between py-3 pt-4"><span className="font-bold">Total Savings</span><span className="text-xl font-bold text-blue-600">{formatCurrency(efficiency.totalSavings)}</span></div></>)}</div></div>
+            <div className="bg-white rounded-xl shadow-lg p-6"><h3 className="text-xl font-bold text-gray-900 mb-4">{valueDriver === 'revenue' ? 'Revenue Details' : 'Efficiency Details'}</h3><div className="space-y-3">{valueDriver === 'revenue' && (<><div className="flex justify-between py-2 border-b"><span className="text-gray-700">Current Revenue</span><span className="font-semibold">{formatCurrency(revenue.currentRevenue)}</span></div><div className="flex justify-between py-2 border-b"><span className="text-gray-700">Conversion Lift</span><span className="font-semibold">{formatCurrency(revenue.conversionLift)}</span></div><div className="flex justify-between py-3 pt-4"><span className="font-bold">Total Lift</span><span className="text-xl font-bold text-green-600">{formatCurrency(revenue.totalLift)}</span></div></>)}{valueDriver === 'efficiency' && (<><div className="flex justify-between py-2 border-b"><span className="text-gray-700">Dev Savings</span><span className="font-semibold">{formatCurrency(efficiency.devCostSavings)}</span></div><div className="flex justify-between py-2 border-b"><span className="text-gray-700">Marketing Productivity</span><span className="font-semibold">{formatCurrency(efficiency.marketingProductivityGain)}</span></div><div className="flex justify-between py-3 pt-4"><span className="font-bold">Total Savings</span><span className="text-xl font-bold text-blue-600">{formatCurrency(efficiency.totalSavings)}</span></div></>)}</div></div>
           </div>
         </div>
         <div className="text-center mt-8"><div className="flex flex-col sm:flex-row gap-4 justify-center items-center"><button onClick={exportToCSV} className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg text-lg font-semibold"><Download className="w-6 h-6" />Export Inputs to CSV</button><div className="relative"><button onClick={() => setShowExportMenu(!showExportMenu)} className="inline-flex items-center gap-2 px-8 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-lg text-lg font-semibold"><Camera className="w-6 h-6" />Download Results</button>{showExportMenu && (<div className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-xl border border-gray-200 z-50 min-w-[280px]"><button onClick={() => { exportTextSummary(); setShowExportMenu(false); }} className="w-full text-left px-6 py-4 hover:bg-gray-50 transition-colors flex items-center gap-3 border-b border-gray-100"><Download className="w-5 h-5 text-gray-600" /><div><div className="font-semibold text-gray-900">Text Summary</div><div className="text-sm text-gray-500">Formatted text file (.txt)</div></div></button><button onClick={() => { exportHTMLPresentation(); setShowExportMenu(false); }} className="w-full text-left px-6 py-4 hover:bg-gray-50 transition-colors flex items-center gap-3 rounded-b-lg"><Camera className="w-5 h-5 text-gray-600" /><div><div className="font-semibold text-gray-900">HTML Presentation</div><div className="text-sm text-gray-500">5 separate pages (.html)</div></div></button></div>)}</div></div><p className="text-sm text-gray-600 mt-4">Download your scenario and results to share with your team</p></div>
