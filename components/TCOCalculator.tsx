@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DollarSign, TrendingUp, Zap, Calculator, Download } from 'lucide-react';
+import { DollarSign, TrendingUp, Zap, Calculator, Download, Camera } from 'lucide-react';
 
 export default function App() {
   const [valueDriver, setValueDriver] = useState('revenue');
@@ -48,6 +48,105 @@ export default function App() {
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = 'contentful_roi_inputs.csv';
+    link.click();
+  };
+
+  const exportResultsAsPDF = () => {
+    const content = `
+CONTENTFUL ROI CALCULATOR - RESULTS SUMMARY
+Generated: ${new Date().toLocaleDateString()}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TOTAL BUSINESS IMPACT (3-Year Projection)
+
+Annual Benefit:          ${formatCurrency(totalAnnualBenefit)}
+3-Year Benefit:          ${formatCurrency(threeYearBenefit)}
+3-Year ROI:              ${roi.toFixed(0)}%
+Payback Period:          ${paybackMonths.toFixed(1)} months
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+REVENUE GROWTH IMPACT
+
+Current Annual Revenue:  ${formatCurrency(revenue.currentRevenue)}
+New Annual Revenue:      ${formatCurrency(revenue.newRevenue)}
+Conversion Rate Lift:    ${formatCurrency(revenue.conversionLift)}
+Time-to-Market Value:    ${formatCurrency(revenue.timeToMarketValue)}
+Total Revenue Lift:      ${formatCurrency(revenue.totalLift)}
+
+Key Inputs:
+- Monthly Visitors:      ${formatNumber(inputs.monthlyVisitors)}
+- Current Conv Rate:     ${inputs.currentConversionRate.toFixed(2)}%
+- Avg Revenue/Conv:      ${formatCurrency(inputs.avgRevenuePerConversion)}
+- Campaign Launch Time:  ${inputs.campaignLaunchTime} days
+- Expected Conv Increase: ${inputs.conversionRateIncrease}%
+- Time-to-Market Reduction: ${inputs.timeToMarketReduction}%
+
+Proof Points:
+• Kraft Heinz: 78% increase in conversion rates
+• Ruggable: 25% higher conversions, 7x CTR
+• KFC: 43% growth in digital sales
+• On Running: 40% sales direct-to-consumer
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OPERATIONAL EFFICIENCY SAVINGS
+
+Current Annual Dev Cost: ${formatCurrency(efficiency.currentDevCost)}
+Developer Cost Savings:  ${formatCurrency(efficiency.devCostSavings)}
+CMS Consolidation:       ${formatCurrency(efficiency.cmsConsolidationSavings)}
+Marketing Productivity:  ${formatCurrency(efficiency.marketingProductivityGain)}
+Total Annual Savings:    ${formatCurrency(efficiency.totalSavings)}
+
+Key Inputs:
+- Developer Hourly Rate: ${formatCurrency(inputs.developerHourlyRate)}
+- Monthly Dev Hours:     ${inputs.monthlyDevHoursOnContent} hours
+- Number of CMS:         ${inputs.numberOfCMS}
+- Annual CMS Cost:       ${formatCurrency(inputs.cmsMaintenanceCostPerYear)}
+- Marketing Team Size:   ${inputs.marketingTeamSize}
+- Expected Efficiency Gain: ${inputs.devEfficiencyGain}%
+
+Proof Points:
+• Audible: 80% decrease in content production time
+• Shiseido: 50% reduction in content costs
+• Costa Coffee: 15 sites built in 15 minutes each
+• BigCommerce: 77% more content, 45% fewer tickets
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INVESTMENT SUMMARY
+
+Implementation Cost:     ${formatCurrency(inputs.implementationCost)}
+3-Year License Cost:     ${formatCurrency(inputs.annualLicenseCost * 3)}
+Total Investment:        ${formatCurrency(totalCost)}
+Net 3-Year Benefit:      ${formatCurrency(netBenefit)}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ABOUT CONTENTFUL
+
+Contentful's composable content platform enables enterprises to:
+• Launch campaigns 60-80% faster
+• Increase conversion rates by 25-78%
+• Reduce operational costs through consolidation
+• Free developers to focus on innovation
+
+Key Differentiators:
+• Composable API-first platform
+• Native personalization & experimentation
+• 110+ marketplace integrations
+• Powers 30% of Fortune 500
+• 99.99% uptime SLA
+• ISO 27001 & SOC 2 Type II certified
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'contentful_roi_results.txt';
     link.click();
   };
 
@@ -431,14 +530,23 @@ export default function App() {
         </div>
 
         <div className="text-center mt-8">
-          <button
-            onClick={exportToCSV}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg text-lg font-semibold"
-          >
-            <Download className="w-6 h-6" />
-            Export Your Inputs to CSV
-          </button>
-          <p className="text-sm text-gray-600 mt-3">Download your scenario to share with your team or send to us for a detailed analysis</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button
+              onClick={exportToCSV}
+              className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg text-lg font-semibold"
+            >
+              <Download className="w-6 h-6" />
+              Export Inputs to CSV
+            </button>
+            <button
+              onClick={exportResultsAsPDF}
+              className="inline-flex items-center gap-2 px-8 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-lg text-lg font-semibold"
+            >
+              <Camera className="w-6 h-6" />
+              Download Results Summary
+            </button>
+          </div>
+          <p className="text-sm text-gray-600 mt-4">Download your scenario and results to share with your team or send to us for a detailed analysis</p>
         </div>
       </div>
     </div>
